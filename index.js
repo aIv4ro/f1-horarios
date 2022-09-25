@@ -1,5 +1,6 @@
 import { fetchNextRace } from './scripts/services/fetchNextRace.js';
 import { timeOptions, dateOptions } from './scripts/dateOptions.js';
+import tracks from './data/tracks.json' assert {type: "json"};
 
 const $ = selector => document.querySelector(selector);
 const $article = $('.gp')
@@ -49,7 +50,7 @@ function getSessionsFromGp(gp) {
 }
 
 function renderGp(gp) {
-  const {raceName, Circuit: { circuitName }} = gp;
+  const {raceName, Circuit: { circuitName, circuitId }} = gp;
   
   const sessions = getSessionsFromGp(gp);
 
@@ -61,6 +62,8 @@ function renderGp(gp) {
 
     return groups;
   }, {});
+
+  const trackMap = tracks[circuitId];
 
   $article.innerHTML = `
     <h2>${raceName}</h2>
@@ -86,5 +89,6 @@ function renderGp(gp) {
         }).join('\n')
       }
     </ul>
+    <img class="track-map" src="${trackMap}" />
   `
 }
